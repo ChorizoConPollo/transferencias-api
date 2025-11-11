@@ -19,8 +19,6 @@ public class Cuenta {
     @Id
     private String id;
 
-    @NotBlank(message = "El número de cuenta es requerido")
-    @Indexed(unique = true)
     private String numeroCuenta;
 
     @NotBlank(message = "El nombre del titular es requerido")
@@ -28,7 +26,6 @@ public class Cuenta {
 
     @NotBlank(message = "El email es requerido")
     @Email
-    @Indexed(unique = true)
     private String email;
 
     @PositiveOrZero(message = "El saldo no puede ser negativo")
