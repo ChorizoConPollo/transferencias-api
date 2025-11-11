@@ -1,19 +1,14 @@
 # Etapa de construcción
-FROM eclipse-temurin:17-jdk-alpine AS build
+FROM maven:3.9-eclipse-temurin-17-alpine AS build
 WORKDIR /app
 
-# Copiar archivos de Maven
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
+# Copiar pom.xml y descargar dependencias
+COPY pom.xml ./
+RUN mvn dependency:go-offline -B
 
-# Descargar dependencias (se cachea esta capa)
-RUN ./mvnw dependency:go-offline
-
-# Copiar código fuente
+# Copiar código fuente y construir
 COPY src ./src
-
-# Construir la aplicación
-RUN ./mvnw clean package -DskipTests
+RUN mvn clean package -DskipTests
 
 # Etapa de ejecución
 FROM eclipse-temurin:17-jre-alpine
